@@ -1,0 +1,6 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+data/BOM_data.csv
+data/BOM_stations.csv
