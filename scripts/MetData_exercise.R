@@ -37,8 +37,8 @@ BOM_data_tidy <- BOM_data %>%
 Q2Result <- BOM_data_tidy %>% 
    filter(!is.na(Temp_diff)) %>%    # call function is.na to (use ! for IsNot) to exclude NA.
    group_by(Month) %>% 
-   summarise(Min_TDiff = min(Temp_diff)) %>% 
-  arrange(Min_TDiff)
+   summarise(Mean_TDiff = mean(Temp_diff)) %>% 
+  filter(Mean_TDiff==min(Mean_TDiff))
 
 #CHALLENGE Question 3: state saw the lowest average daily temperature difference
 
@@ -157,4 +157,12 @@ BOM_stations_tidy <-BOM_stations_trans %>%
 
 #now I have a cleaned up data set I can link to the BOM_data_tidy to get state information for Q3
 
-Q3 <- full_join(BOM_stations_tidy, BOM_data_tidy, by=c("station_no"="Station_number"))
+BOM_Combo <- full_join(BOM_stations_tidy, BOM_data_tidy, by=c("station_no"="Station_number"))
+
+# to Q3: which state saw the lowest average daily temperature difference
+
+Q3Result <- BOM_Combo %>% 
+  filter(!is.na(Temp_diff)) %>%    # call function is.na to (use ! for IsNot) to exclude NA.
+  group_by(state) %>% 
+  summarise(Mean_TDiff = mean(Temp_diff)) %>% 
+  filter(Mean_TDiff==min(Mean_TDiff))
