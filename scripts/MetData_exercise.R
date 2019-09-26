@@ -33,12 +33,14 @@ BOM_data_tidy <- BOM_data %>%
   mutate(Solar_exposure = as.numeric(Solar_exposure)) %>% 
   
   mutate(Temp_diff = Temp_max-Temp_min) #make a new variable of temperature difference
-  
+
+# using the tidied up data frame select which state saw the lowest average daily temperature difference to answer Q3 
 Q2Result <- BOM_data_tidy %>% 
    filter(!is.na(Temp_diff)) %>%    # call function is.na to (use ! for IsNot) to exclude NA.
    group_by(Month) %>% 
    summarise(Mean_TDiff = mean(Temp_diff)) %>% 
   filter(Mean_TDiff==min(Mean_TDiff))
+
 
 #CHALLENGE Question 3: state saw the lowest average daily temperature difference
 
@@ -53,6 +55,8 @@ BOM_stations
 
 BOM_stations <- read_csv("data/BOM_stations.csv", col_names=FALSE)
 BOM_stations
+ # ALTERNATIVE TO MY APPROACH more elegant version.... 
+  # gather(BOM_stations, station_no, data, 2:21)
 
 #now it made column headers X1 to X21 and all rows can be used as data 
 # Cleaning up stations data by transposing and using the first column as new column headers
@@ -159,10 +163,33 @@ BOM_stations_tidy <-BOM_stations_trans %>%
 
 BOM_Combo <- full_join(BOM_stations_tidy, BOM_data_tidy, by=c("station_no"="Station_number"))
 
-# to Q3: which state saw the lowest average daily temperature difference
+# using the combined data frame select which state saw the lowest average daily temperature difference to answer Q3
 
 Q3Result <- BOM_Combo %>% 
   filter(!is.na(Temp_diff)) %>%    # call function is.na to (use ! for IsNot) to exclude NA.
   group_by(state) %>% 
   summarise(Mean_TDiff = mean(Temp_diff)) %>% 
   filter(Mean_TDiff==min(Mean_TDiff))
+
+
+# cleaner way try out gather(BOM_stations, station_no, data, 2:21)
+
+# CHALLENGE Question 4: Does the westmost (lowest longitude) or eastmost (highest longitude) weather station 
+#have a higher average solar exposure?
+Q4Result <- BOM_Combo %>% 
+  filter(!is.na(Solar_exposure)) %>%    # call function is.na to (use ! for IsNot) to exclude NA.
+  group_by(station_no) %>% 
+  summarise(Mean_SolEx = mean(Solar_exposure)) %>%               # create the mean SolExp by station
+  full_join(BOM_stations_tidy, by=c("station_no"="station_no")) %>%    # rejoin station info to the grouped data
+  filter(lon==max(lon) | lon==(min(lon))) %>%                        # filter out the eastern/ western most statons
+# up to here I have picked out the eastern and westernmost stations now I add a  variable easter or westrn most 
+#then filter out the lowest Solar exposure to give result
+  mutate("Loc"= case_when(lon==min(lon) ~ "westmost", lon==max(lon) ~ "eastmost")) %>% 
+  filter(Mean_SolEx==min(Mean_SolEx))
+
+
+
+
+
+  
+
