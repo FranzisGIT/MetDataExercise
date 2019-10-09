@@ -57,19 +57,19 @@ Perth1 <- ggplot(data = stnPerth,
          mapping = aes(x = Temp_max,         
                        y = Temp_min
          ))+
-  geom_point()
+  geom_point(alpha=0.2)
 
 Perth2 <- ggplot(data = stnPerth, 
        mapping = aes(x = Temp_max,         
                      y = Rainfall
        ))+
-  geom_point()
+  geom_point(alpha=0.2)
 
 Perth3 <- ggplot(data = stnPerth, 
        mapping = aes(x = Temp_max,         
                      y = Solar_exposure
        ))+
-  geom_point()
+  geom_point(alpha=0.2)
 
 #Q2:Put all three into a single plot
 
@@ -81,8 +81,9 @@ Perth_combo <- ggplot(data = stnPerth,
                      size = Rainfall           # use symbol size
                      
        ))+
-  geom_point()+
+  geom_point(alpha=0.2)+
   theme(legend.position="bottom")
+  
 
 #Q3 make multipanel figure from Q1 & Q2
 # first I need to install the cowplot paccke, then call up the library 
@@ -90,7 +91,7 @@ Perth_combo <- ggplot(data = stnPerth,
 
 library(cowplot)
 
-comboPlot1 <- plot_grid(Perth1, Perth2, Perth3 )  # first panel of my final grid
+comboPlot1 <- plot_grid(Perth1, Perth2, Perth3, ncol=1)  # first panel of my final grid
 comboPlot2 <- plot_grid(comboPlot1, Perth_combo)  # add second part to grid
 ggsave("figures/comboPlot2.jpg", 
              plot=comboPlot2, 
