@@ -115,5 +115,6 @@ AvRainPlot <- ggplot(data = AvRain,
                                colour=state
                  ))+
   geom_line()+
-  #theme()
-            
+  facet_wrap(~state)
+
+AvRainPlot
