@@ -117,4 +117,8 @@ AvRainPlot <- ggplot(data = AvRain,
   geom_line()+
   facet_wrap(~state)
 
-AvRainPlot
+  ggsave("figures/comboPlot1.jpg", 
+         plot=AvRainPlot)
+
+  AvRainPlot
+  
