@@ -90,11 +90,12 @@ Perth_combo <- ggplot(data = stnPerth,
 
 library(cowplot)
 
-comboPlot1 <- plot_grid(Perth1, Perth2, Perth3, Perth_combo )
-ggsave("figures/comboPlot1.jpg", 
-             plot=comboPlot1, 
-             width=17, 
-             height=8,
+comboPlot1 <- plot_grid(Perth1, Perth2, Perth3 )  # first panel of my final grip
+comboPlot2 <- plot_grid(comboPlot1, Perth_combo)
+ggsave("figures/comboPlot2.jpg", 
+             plot=comboPlot2, 
+             width=24, 
+             height=10,
              units= "cm",
              dpi=600)
 
