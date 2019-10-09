@@ -92,12 +92,9 @@ Perth_combo <- ggplot(data = stnPerth,
 library(cowplot)
 
 comboPlot1 <- plot_grid(Perth1, Perth2, Perth3, ncol=1)  # first panel of my final grid
-comboPlot2 <- plot_grid(comboPlot1, Perth_combo)  # add second part to grid
+comboPlot2 <- plot_grid(comboPlot1, Perth_combo, rel_heights = c(1, 3))  # add second part to grid
 ggsave("figures/comboPlot2.jpg", 
              plot=comboPlot2, 
-             width=24, 
-             height=10,
-             units= "cm",
              dpi=600)
 
 #Q4 calculate the average monthly rainfall for each station lineplot to visualise this data and 
